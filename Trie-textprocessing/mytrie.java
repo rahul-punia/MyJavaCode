@@ -1,9 +1,10 @@
  import java.util.*;
  public class mytrie {
-    static class Node{
+    static class Node{  //Node have three property
         char data;
         int terminating; //eow
-        HashMap<Character,Node> Children;
+        HashMap<Character,Node> Children;//Here 'Character' act as key to search that char node
+        //in childrens HashMap that's why we are storing it at two places i.e as a key and as a data
         Node(char data){
             this.data=data; this.terminating=0; this.Children=new HashMap<>(); 
         }
@@ -18,7 +19,7 @@
         String ros=str.substring(1);
 
         Node child=root.Children.get(ch);
-        if(child==null){
+        if(child==null){  //if child not present then add child
             child=new Node(ch);
             root.Children.put(ch,child);
             add(child,ros);
@@ -40,8 +41,9 @@
         if(child==null)return;
         else{
         delete(child, ros);
-        if(child.terminating==0 && child.Children.size()==0){
-                root.Children.remove(ch);
+        if(child.terminating==0 && child.Children.size()==0){//Removing character is not end part character 
+            //of other word && also removing character is not a mid part of other word
+                root.Children.remove(ch);//remove key from above node of below Node(child).
         }
     }
     }
@@ -80,8 +82,8 @@
         }
     }
     public static void main(String[] args){
-            Node root=new Node('$');
-            add(root, "are");
+        Node root=new Node('$');
+        add(root, "are");
         add(root, "art");
         add(root, "an");
         add(root, "and");

@@ -1,0 +1,32 @@
+Q1-Problem-I am working with data types at the moment in Java, and if I have understood correctly the type long 
+accepts a value between the ranges of -9,223,372,036,854,775,808 to +9,223,372,036,854,775,807. 
+Now as you can see below, I have create a long variable called testLong, 
+although when I insert 9223372036854775807 as the value, I get an error stating:
+
+The literal 9223372036854775807 of the type int is out of range.
+
+soln-  Add a capital L to the end:
+
+long value = 9223372036854775807L;
+Otherwise, the compiler will try to parse the literal as an int, hence the error message
+
+The basic difference between the type int and long is of their width where int is 32 bit, 
+and long is 64 bits. ... In Java, the range of type int is from –2,147,483,648 to 2,147,483,647 
+whereas, the range of type long is from –9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 
+which is very much greater than type int.
+
+
+Q2- No of operation per second?
+link-  https://codeforces.com/blog/entry/80680
+soln-I don't know that there is much to explain... You can do closer to 2∗108 operations per second in C++ 
+if those operations are low-level operations (array accesses, additions, bitshifts, multiplies, subtractions
+, xors, et cetera). Mods and divisions are slightly slower. If you are doing things like hashmap lookups, 
+reading input, or printing output, you can do about 106 of those per second. If you use Java, the cut-off 
+is maybe 70% what it is in C++, since a lot of things have more overhead, but of course it really depends
+ on what the operations are; sometimes it is closer to 30% of what C++ can do.
+
+ It completely depends on the type of operations that you are going to use. For example (%) module operation 
+ takes much more time than (+) sum operation. If your operations are simple (like + and ×. But not / and %) 
+ C++ can do even more than 1e9 operations per second. The second thing that matters is your memory usage. 
+ If CPU can store all of the data in cash memory then your code will run way faster than the case that 
+ CPU should use RAM!

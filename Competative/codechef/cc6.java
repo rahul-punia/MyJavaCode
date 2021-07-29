@@ -1,25 +1,119 @@
 import java.util.*;
 
 public class cc6 {
+    // static int[] list;
+    static ArrayList<Integer> list=new ArrayList<>();
+    public static void SOE(int n){
+        int[] sieve=new int[n+1];
 
+        // System.out.println("All prime number from 1 to n:-");
+        
+        for(int x=2;x<=n;x++){
+            if(sieve[x]!=0){  //Not prime number
+                continue;
+            }
+            // System.out.print(x+"  ");
+            list.add(x);
+            for(int u=2*x;u<=n;u+=x){
+                sieve[u]=x;
+            }
+        }
+    }
+
+    public  static int bs(int targ){
+        int lo=0,hi=list.size()-1;
+
+        while(lo<hi){
+            int m=lo+(hi-lo)/2;
+            if(list.get(m)==targ){return m;}else
+            if(list.get(m)>targ){
+                hi=m;
+            }else{
+                lo=m+1;
+            }
+        }
+        return hi;
+    }
     public static void main(String[] args){
         Scanner scn=new Scanner(System.in);
                 long t=scn.nextLong();
-                while(t-->0){
-                   int n=scn.nextInt();
-                   int k=scn.nextInt();
-                   
-                   for (int i = 1; i < 2 * k - n; ++i)
-                   System.out.print(i+" ");
-        
-                 for (int i = k; i >= 2 * k - n; --i)
-                   System.out.print(i+" ");
+                SOE(10000001);
 
-                System.out.println();   
+                while(t-->0){
+                   int d=scn.nextInt();
+                   
+                   int tg=d+1;
+                   int idx=bs(tg);
+                    int val1=list.get(idx);
+                    int idx2=bs(val1+d);
+                    int val2=list.get(idx2);
+                    long ans=(long)((long)val1*(long)val2);
+
+                    // System.out.println(ans+" "+val1+" "+val2);
+                    System.out.println(ans);
                 }
             }
+        }
+    // public static void main(String[] args){
+    //     Scanner scn=new Scanner(System.in);
+    //             long t=scn.nextLong();
 
-    }
+    //             while(t-->0){
+
+    //                int n=scn.nextInt();
+    //                String str=scn.next();
+    //                 String nstr=""+1;
+    //                 int prev=-1;
+    //                 int[] arr=new int[n];
+
+    //                 char[] ans=new char[n];
+    //             if(str.charAt(0)=='1'){arr[0]+=1;}
+                    
+    //                arr[0]+=1;
+    //                ans[0]='1';
+    //                for(int i=1;i<n;i++){
+    //                 if(str.charAt(i)=='1'){
+    //                     arr[i]=1;
+    //                 }
+    //                   if(arr[i-1]!=arr[i]+1){
+    //                      arr[i]+=1;  ans[i]='1';
+    //                   }else{
+    //                     // nstr+='0';
+    //                     ans[i]='0';
+    //                   }
+    //                }
+    //                StringBuilder sbf = new StringBuilder();
+    //                sbf.append(ans);
+    //             //    nstr=Arrays.toString(ans);
+    //                System.out.println(sbf);
+    //             }
+    //         }
+    //     }
+
+
+
+
+
+
+
+    // public static void main(String[] args){
+    //     Scanner scn=new Scanner(System.in);
+    //             long t=scn.nextLong();
+    //             while(t-->0){
+    //                int n=scn.nextInt();
+    //                int k=scn.nextInt();
+                   
+    //                for (int i = 1; i < 2 * k - n; ++i)
+    //                System.out.print(i+" ");
+        
+    //              for (int i = k; i >= 2 * k - n; --i)
+    //                System.out.print(i+" ");
+
+    //             System.out.println();   
+    //             }
+    //         }
+
+    // }
 
     // public static void main(String[] args){
     //     Scanner scn=new Scanner(System.in);

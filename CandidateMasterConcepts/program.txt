@@ -1,0 +1,356 @@
+void main(){
+    int a,b,c;
+    c=a+b;
+}
+
+#include "/Users/akshaypuniya/Desktop/Inter-prep-Books/stdc++.h"
+
+using namespace std;
+ 
+int isKeyword(char buffer[]){
+    char keywords[32][10] = {"auto","break","case","char","const","continue","default",
+                            "do","double","else","enum","extern","float","for","goto",
+                            "if","int","long","register","return","short","signed",
+                            "sizeof","static","struct","switch","typedef","union",
+                            "unsigned","void","volatile","while"};
+    int i, flag = 0;
+    
+    for(i = 0; i < 32; ++i){
+        if(strcmp(keywords[i], buffer) == 0){
+            flag = 1;
+            break;
+        }
+    }
+    
+    return flag;
+}
+ 
+int main(){
+    char ch, buffer[15], operators[] = "+-*/%=";
+    ifstream fin("program.txt");
+    int i,j=0;
+    
+    if(!fin.is_open()){
+        cout<<"error while opening the file\n";
+        exit(0);
+    }
+    
+    while(!fin.eof()){
+           ch = fin.get();
+           
+        for(i = 0; i < 6; ++i){
+               if(ch == operators[i])
+                   cout<<ch<<" is operator\n";
+           }
+           
+           if(isalnum(ch)){
+               buffer[j++] = ch;
+           }
+           else if((ch == ' ' || ch == '\n') && (j != 0)){
+                   buffer[j] = '\0';
+                   j = 0;
+                                      
+                   if(isKeyword(buffer) == 1)
+                       cout<<buffer<<" is keyword\n";
+                   else
+                       cout<<buffer<<" is indentifier\n";
+           }
+           
+    }
+    
+    fin.close();
+    
+    return 0;
+}
+
+
+//Exp-5
+
+#include "/Users/rahulpuniya/Desktop/Inter-prep-Books/stdc++.h"
+
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+void E(string expr,int count);
+void Ed(string expr,int count);
+void T(string expr,int count);
+void Td(string expr,int count);
+void F(string expr,int count);
+int ocount = 0;
+
+int main() {
+  string expr;
+  cin >> expr;
+  int l = (int)expr.length();
+  expr += "$";
+  E(expr,ocount);
+  if (l == ocount)
+    cout << "Accepted" << endl;
+  else
+    cout << "Rejected" << endl;
+  
+}
+
+void E(string expr,int count) {
+  cout << "E->TE'" << endl;
+  T(expr,ocount);
+  Ed(expr,ocount);
+   
+}
+
+void Ed(string expr,int count) {
+    
+  if (expr[ocount] == '+') {
+    ocount++;
+    cout << "E'->+TE'" << endl;
+    T(expr,ocount);
+    Ed(expr,ocount);
+  }
+
+  else if (expr[ocount] == '-') {
+    ocount++;
+    cout << "E'->-TE'" << endl;
+    T(expr,ocount);
+    Ed(expr,ocount);
+  }
+
+  else {
+    cout << "E'->null" << endl;
+  }
+   
+}
+
+void T(string expr,int count) {
+   
+  cout << "T->FT'" << endl;
+  F(expr,ocount);
+  Td(expr,ocount);
+}
+
+void Td(string expr,int count) {
+    
+  if (expr[ocount] == '*') {
+    ocount++;
+    cout << "T'->*FT'" << endl;
+    F(expr,ocount);
+    Td(expr,ocount);
+  }
+
+  else if (expr[ocount] == '/') {
+    ocount++;
+    cout << "T'->/FT'" << endl;
+    F(expr,ocount);
+    Td(expr,ocount);
+  }
+
+  else {
+    cout << "T'->null" << endl;
+  }
+    
+}
+
+void F(string expr,int count) {
+   if (isalpha(expr[ocount])) {
+    ocount++;
+    cout << "F->id" << endl;
+  } else if (isdigit(expr[ocount])) {
+    ocount++;
+    cout << "F->digit" << endl;
+  } else if (expr[ocount] == '(') {
+    ocount++;
+    cout << "F->(E)" << endl;
+    E(expr,ocount);
+    if (expr[ocount] != ')') {
+      cout << "Rejected" << endl;
+      exit(0);
+    }
+    ocount++;
+  } else {
+    cout << "Rejected" << endl;
+    exit(0);
+  }
+    
+}
+
+Production Rules-
+
+E->TE'
+E'->+TE'|-TE'|null
+T-> FT'
+T'->*FT'|/FT'|null
+F-> id|num|(E)
+
+//Exp-10
+
+In the beginning, the pushdown stack holds the start symbol of the grammar G.
+At each step a symbol X is popped from the stack:
+if X is a terminal then it is matched with the lookahead and lookahead is advanced one step,
+if X is a nonterminal symbol, then using lookahead and a parsing table (implementing the FIRST sets) a production is chosen and its right-hand side is pushed into the stack.
+This process repeats until the stack and the input string become null (empty).
+
+The Predictive parsing is a special form of recursive descent parsing, where no backtracking is required, so this can predict which production to use to replace the input string.
+
+Non-recursive predictive parsing or table-driven is also known as LL(1) parser. This parser follows the leftmost derivation (LMD).
+
+The main problem during predictive parsing is that of determining the production to be applied for a non-terminal.
+This non-recursive parser looks up which production to be applied in a parsing table.
+
+//Exp-10
+#include "/Users/akshaypuniya/Desktop/Inter-prep-Books/stdc++.h"
+#include<iostream>
+#include<string>
+#include<deque>
+using namespace std;
+int n,n1,n2;
+int getPosition(string arr[], string q, int size)
+{
+    for(int i=0;i<size;i++)
+    {
+        if(q == arr[i])
+            return i;
+    }
+    return -1;
+}
+int main()
+{
+    string prods[10],first[10],follow[10],nonterms[10],terms[10];
+    string pp_table[20][20] = {};
+    cout<<"Enter the number of productions : ";
+    cin>>n;
+    cin.ignore();
+    cout<<"Enter the productions"<<endl;
+    for(int i=0;i<n;i++)
+    {
+        getline(cin,prods[i]);
+        cout<<"Enter first for "<<prods[i].substr(3)<<" : ";
+        getline(cin,first[i]);
+    }
+    cout<<"Enter the number of Terminals : ";
+    cin>>n2;
+    cin.ignore();
+    cout<<"Enter the Terminals"<<endl;
+    for(int i=0;i<n2;i++)
+    {
+        cin>>terms[i];
+    }
+    terms[n2] = "$";
+    n2++;
+    cout<<"Enter the number of Non-Terminals : ";
+    cin>>n1;
+    cin.ignore();
+    for(int i=0;i<n1;i++)
+    {
+        cout<<"Enter Non-Terminal : ";
+        getline(cin,nonterms[i]);
+        cout<<"Enter follow of "<<nonterms[i]<<" : ";
+        getline(cin,follow[i]);
+    }
+
+
+    cout<<endl;
+    cout<<"Grammar"<<endl;
+    for(int i=0;i<n;i++)
+    {
+        cout<<prods[i]<<endl;
+    }
+
+
+    for(int j=0;j<n;j++)
+    {
+        int row = getPosition(nonterms,prods[j].substr(0,1),n1);
+        if(prods[j].at(3)!='#')
+        {
+            for(int i=0;i<first[j].length();i++)
+            {
+                int col = getPosition(terms,first[j].substr(i,1),n2);
+                pp_table[row][col] = prods[j];
+            }
+        }
+        else
+        {
+            for(int i=0;i<follow[row].length();i++)
+            {
+                int col = getPosition(terms,follow[row].substr(i,1),n2);
+                pp_table[row][col] = prods[j];
+            }
+        }
+    }
+    //Display Table
+    for(int j=0;j<n2;j++)
+        cout<<"\t"<<terms[j];
+    cout<<endl;
+    for(int i=0;i<n1;i++)
+    {
+            cout<<nonterms[i]<<"\t";
+            //Display Table
+            for(int j=0;j<n2;j++)
+            {
+                cout<<pp_table[i][j]<<"\t";
+            }
+            cout<<endl;
+    }
+    //Parsing String
+    char c;
+    do{
+    string ip;
+    deque<string> pp_stack;
+    pp_stack.push_front("$");
+    pp_stack.push_front(prods[0].substr(0,1));
+    cout<<"Enter the string to be parsed : ";
+    getline(cin,ip);
+    ip.push_back('$');
+    cout<<"Stack\tInput\tAction"<<endl;
+    while(true)
+    {
+        for(int i=0;i<pp_stack.size();i++)
+            cout<<pp_stack[i];
+        cout<<"\t"<<ip<<"\t";
+        int row1 = getPosition(nonterms,pp_stack.front(),n1);
+        int row2 = getPosition(terms,pp_stack.front(),n2);
+        int column = getPosition(terms,ip.substr(0,1),n2);
+        if(row1 != -1 && column != -1)
+        {
+            string p = pp_table[row1][column];
+            if(p.empty())
+            {
+                cout<<endl<<"String cannot be Parsed."<<endl;
+                break;
+            }
+            pp_stack.pop_front();
+            if(p[3] != '#')
+            {
+                for(int x=p.size()-1;x>2;x--)
+                {
+                    pp_stack.push_front(p.substr(x,1));
+                }
+            }
+            cout<<p;
+        }
+        else
+        {
+            if(ip.substr(0,1) == pp_stack.front())
+            {
+                if(pp_stack.front() == "$")
+                {
+                    cout<<endl<<"String Parsed."<<endl;
+                    break;
+                }
+                cout<<"Match "<<ip[0];
+                pp_stack.pop_front();
+                ip = ip.substr(1);
+            }
+            else
+            {
+                cout<<endl<<"String cannot be Parsed."<<endl;
+                break;
+            }
+        }
+        cout<<endl;
+    }
+    cout<<"Continue?(Y/N) ";
+    cin>>c;
+    cin.ignore();
+    }while(c=='y' || c=='Y');
+    return 0;
+}

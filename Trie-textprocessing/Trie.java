@@ -106,6 +106,8 @@ public class Trie{
         }
         return lps;
     }
+
+    
     static void KMP(String src,String pat){
         int[] lps=getlps(pat);         //longest proper suffix
         int i=0;       //traverse on source

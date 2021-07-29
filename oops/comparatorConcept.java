@@ -14,6 +14,8 @@ public class comparatorConcept {
         public String toString(){
             return "\n"+roll+"\t"+age+""+name;
         }
+
+        //Important
         public int compareTo(student other){
             return this.age-other.age;
         }
