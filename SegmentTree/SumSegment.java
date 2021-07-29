@@ -58,18 +58,10 @@ public class SumSegment {
         }
         // range represented by a node is partially inside and partially outside the given range
         int mid = (ss + se) / 2;
-        int p1 = rangeSum(2*node, ss, mid, l, r,tree);
-        int p2 = rangeSum(2*node+1, mid+1, se, l, r,tree);
+        int s1 = rangeSum(2*node, ss, mid, l, r,tree);
+        int s2 = rangeSum(2*node+1, mid+1, se, l, r,tree);
 
-        int sum=0;
-        if(p1>0){
-            sum+=p1;
-        }
-        if(p2>0){
-            sum+=p2;
-        }
-
-        return p1+p2;
+        return s1+s2;
     }
 
     public static void main(String args[] ) throws Exception{  
